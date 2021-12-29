@@ -97,12 +97,6 @@ jobs:
       cleanDestinationFolder: true
       overwriteExistingFiles: false
 
-  - task: Docker@2
-    inputs:
-      command: 'buildAndPush'
-      Dockerfile: '$(Agent.BuildDirectory)/src/LanguageServer/Dockerfile'
-      buildContext: '$(Agent.BuildDirectory)/src/LanguageServer'
-
   - task: PublishBuildArtifacts@1
     inputs:
       pathtoPublish: '$(Build.ArtifactStagingDirectory)'
