@@ -33,8 +33,7 @@ RUN mkdir /workspace/customdlls
 COPY workspace /workspace
 
 WORKDIR /app
-COPY package.json package.json
-COPY src src
+COPY app /app
 RUN npm install
 EXPOSE 3000
 # Entrypoint
