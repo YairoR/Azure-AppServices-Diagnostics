@@ -78,9 +78,26 @@ jobs:
       arguments: '--configuration $(BuildConfiguration) --output $(Build.ArtifactStagingDirectory)'
       zipAfterPublish: True
 
+  - task: PublishBuildArtifacts@1
+    inputs:
+      pathtoPublish: '$(Build.ArtifactStagingDirectory)'
+      artifactName: backend-drop1
+
+- job: 'BuildLanguageServer'
+  pool:
+    vmImage: 'ubuntu-1604'
+
+  steps:
+  - task: DownloadBuildArtifacts@0
+    inputs:
+      buildType: 'current'
+      downloadType: 'single'
+      artifactName: 'backend-drop1'
+      downloadPath: '$(System.ArtifactsDirectory)'
+
   - task: ExtractFiles@1
     inputs:
-      archiveFilePatterns: '$(Build.ArtifactStagingDirectory)/Diagnostics.RuntimeHost.zip'
+      archiveFilePatterns: '$(System.ArtifactsDirectory)/Diagnostics.RuntimeHost.zip'
       destinationFolder: '$(Agent.BuildDirectory)/applensdlls'
 
   - task: CopyFiles@2
@@ -104,8 +121,3 @@ jobs:
       command: 'buildAndPush'
       Dockerfile: '$(Agent.BuildDirectory)/**/Dockerfile'
       buildContext: '$(Agent.BuildDirectory)/src/LanguageServer'
-
-  - task: PublishBuildArtifacts@1
-    inputs:
-      pathtoPublish: '$(Build.ArtifactStagingDirectory)'
-      artifactName: backend-drop1
