@@ -46,7 +46,7 @@ jobs:
   - task: Docker@2
     inputs:
       containerRegistry: 'LanguageServerRegistry'
-      repository: 'containerappstest.azurecr.io/langserv'
+      repository: 'langserv'
       command: 'buildAndPush'
       Dockerfile: '$(Build.Repository.LocalPath)/**/Dockerfile'
       buildContext: '$(Build.Repository.LocalPath)/src/LanguageServer'
