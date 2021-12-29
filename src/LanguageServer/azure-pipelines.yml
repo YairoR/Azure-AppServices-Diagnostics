@@ -14,9 +14,12 @@ jobs:
     vmImage: 'ubuntu-latest'
 
   steps:
-  - task: DownloadBuildArtifacts@0
+  - task: DownloadBuildArtifacts@1
     inputs:
-      buildType: 'current'
+      buildType: 'specific'
+      project: 'd760220e-01cd-406f-b520-62a6e0779471'
+      pipeline: '12'
+      buildVersionToDownload: 'latest'
       downloadType: 'single'
       artifactName: 'backend-drop1'
       downloadPath: '$(Agent.BuildDirectory)'
