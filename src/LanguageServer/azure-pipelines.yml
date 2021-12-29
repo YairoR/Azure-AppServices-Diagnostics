@@ -1,0 +1,49 @@
+# ASP.NET Core (.NET Framework)
+
+# Build and test ASP.NET Core projects targeting the full .NET Framework.
+# Add steps that publish symbols, save build artifacts, and more:
+# https://docs.microsoft.com/azure/devops/pipelines/languages/dotnet-core
+
+trigger:
+- main
+
+jobs:
+
+- job: 'BuildLanguageServer'
+  pool:
+    vmImage: 'ubuntu-latest'
+
+  steps:
+  - task: DownloadBuildArtifacts@0
+    inputs:
+      buildType: 'current'
+      downloadType: 'single'
+      artifactName: 'backend-drop1'
+      downloadPath: '$(Agent.BuildDirectory)'
+
+  - task: ExtractFiles@1
+    inputs:
+      archiveFilePatterns: '$(Agent.BuildDirectory)/backend-drop1/Diagnostics.RuntimeHost.zip'
+      destinationFolder: '$(Agent.BuildDirectory)/applensdlls'
+
+  - task: CopyFiles@2
+    inputs:
+      SourceFolder: '$(Agent.BuildDirectory)/applensdlls'
+      Contents: |
+        Diagnostics.DataProviders.dll
+        Diagnostics.Logger.dll
+        Diagnostics.ModelsAndUtils.dll
+        Diagnostics.Scripts.dll
+        Kusto.Data.dll
+      TargetFolder: '$(Agent.BuildDirectory)/src/LanguageServer/workspace/customdlls'
+      OverWrite: true
+      cleanDestinationFolder: true
+      overwriteExistingFiles: false
+  
+  - task: Docker@2
+    inputs:
+      containerRegistry: 'LanguageServerRegistry'
+      repository: 'containerappstest.azurecr.io/langserv'
+      command: 'buildAndPush'
+      Dockerfile: '$(Agent.BuildDirectory)/**/Dockerfile'
+      buildContext: '$(Agent.BuildDirectory)/src/LanguageServer'
