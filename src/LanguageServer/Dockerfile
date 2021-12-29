@@ -30,8 +30,7 @@ RUN dotnet help
 # Copy artifacts
 RUN mkdir /workspace
 RUN mkdir /workspace/customdlls
-COPY workspace/customdlls /workspace/customdlls
-COPY workspace/Solution.csproj /workspace/
+COPY workspace /workspace
 
 WORKDIR /app
 COPY package.json package.json
