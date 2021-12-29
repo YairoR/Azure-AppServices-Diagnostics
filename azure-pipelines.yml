@@ -85,7 +85,7 @@ jobs:
 
 - job: 'BuildLanguageServer'
   pool:
-    vmImage: 'ubuntu-1604'
+    vmImage: 'ubuntu-latest'
 
   steps:
   - task: DownloadBuildArtifacts@0
