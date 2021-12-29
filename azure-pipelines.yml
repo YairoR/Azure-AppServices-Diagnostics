@@ -102,8 +102,8 @@ jobs:
       containerRegistry: 'LanguageServerRegistry'
       repository: 'containerappstest.azurecr.io/langserv'
       command: 'buildAndPush'
-      Dockerfile: '$(Agent.BuildDirectory)/src/LanguageServer/Dockerfile'
-      buildContext: '$(Agent.BuildDirectory)/src/LanguageServer'
+      Dockerfile: $(Agent.BuildDirectory)/src/LanguageServer/Dockerfile
+      buildContext: $(Agent.BuildDirectory)/src/LanguageServer
 
   - task: PublishBuildArtifacts@1
     inputs:
