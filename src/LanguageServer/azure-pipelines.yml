@@ -38,7 +38,7 @@ jobs:
         Diagnostics.ModelsAndUtils.dll
         Diagnostics.Scripts.dll
         Kusto.Data.dll
-      TargetFolder: '$(Agent.BuildDirectory)/src/LanguageServer/workspace/customdlls'
+      TargetFolder: '$(Build.Repository.LocalPath)/src/LanguageServer/workspace/customdlls'
       OverWrite: true
       cleanDestinationFolder: true
       overwriteExistingFiles: false
@@ -48,5 +48,5 @@ jobs:
       containerRegistry: 'LanguageServerRegistry'
       repository: 'containerappstest.azurecr.io/langserv'
       command: 'buildAndPush'
-      Dockerfile: '$(Agent.BuildDirectory)/**/Dockerfile'
-      buildContext: '$(Agent.BuildDirectory)/src/LanguageServer'
+      Dockerfile: '$(Build.Repository.LocalPath)/**/Dockerfile'
+      buildContext: '$(Build.Repository.LocalPath)/src/LanguageServer'
