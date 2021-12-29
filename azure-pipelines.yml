@@ -78,6 +78,31 @@ jobs:
       arguments: '--configuration $(BuildConfiguration) --output $(Build.ArtifactStagingDirectory)'
       zipAfterPublish: True
 
+  - task: ExtractFiles@1
+    inputs:
+      archiveFilePatterns: '$(Build.ArtifactStagingDirectory)/Diagnostics.RuntimeHost.zip'
+      destinationFolder: '$(Agent.BuildDirectory)/applensdlls'
+
+  - task: CopyFiles@2
+    inputs:
+      SourceFolder: '$(Agent.BuildDirectory)/applensdlls'
+      Contents: |
+        Diagnostics.DataProviders.dll
+        Diagnostics.Logger.dll
+        Diagnostics.ModelsAndUtils.dll
+        Diagnostics.Scripts.dll
+        Kusto.Data.dll
+      TargetFolder: '$(Agent.BuildDirectory)/src/LanguageServer/workspace/customdlls'
+      OverWrite: true
+      cleanDestinationFolder: true
+      overwriteExistingFiles: false
+
+  - task: Docker@2
+    inputs:
+      command: 'buildAndPush'
+      Dockerfile: '$(Agent.BuildDirectory)/src/LanguageServer/Dockerfile'
+      buildContext: '$(Agent.BuildDirectory)/src/LanguageServer'
+
   - task: PublishBuildArtifacts@1
     inputs:
       pathtoPublish: '$(Build.ArtifactStagingDirectory)'
