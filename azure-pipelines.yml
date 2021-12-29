@@ -93,11 +93,11 @@ jobs:
       buildType: 'current'
       downloadType: 'single'
       artifactName: 'backend-drop1'
-      downloadPath: '$(System.ArtifactsDirectory)'
+      downloadPath: '$(Agent.BuildDirectory)'
 
   - task: ExtractFiles@1
     inputs:
-      archiveFilePatterns: '$(System.ArtifactsDirectory)/Diagnostics.RuntimeHost.zip'
+      archiveFilePatterns: '$(Agent.BuildDirectory)/backend-drop1/Diagnostics.RuntimeHost.zip'
       destinationFolder: '$(Agent.BuildDirectory)/applensdlls'
 
   - task: CopyFiles@2
